@@ -1,6 +1,4 @@
-ifeq ($(RELEASE),TRUE)
-	FLAGS=-s
-else
+ifneq ($(RELEASE),TRUE)
 	FLAGS=-g -bin-annot -w A -color always
 endif
 
