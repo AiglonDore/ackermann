@@ -19,4 +19,5 @@ clean :
 	rm -v -f *.cmo *.cmi *.cmx *.o *.annot *.cmt *.o
 
 install :
+	make RELEASE=TRUE bin/ack.native
 	cp bin/ack.native /usr/local/bin/ack
