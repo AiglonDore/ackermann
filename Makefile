@@ -1,29 +1,22 @@
-ifeq ($(BIN),TRUE)
-	CC=ocamlopt
-else
-	CC=ocamlc
-endif
-
 ifeq ($(RELEASE),TRUE)
 	FLAGS=-s
 else
 	FLAGS=-g -bin-annot -w A -color always
 endif
 
-all : bin/ack.out
+all : bin/ack.native bin/ack.byte
 
-bin/ack.out : obj/main.o obj/ack.o
-	$(CC) $(FLAGS) -o $@ $^
+bin/ack.byte : ack.ml
+	ocamlc $(FLAGS) -o $@ $^
+	rm -v -f *.cmo *.cmi *.cmx *.o *.annot *.cmt *.o
 
-obj/main.o : src/main.ml
-	$(CC) $(FLAGS) -c -o $@ $<
-
-obj/ack.o : src/ack.ml interface/ack.mli
-	$(CC) $(FLAGS) -c -o $@ $<
+bin/ack.native : ack.ml
+	ocamlopt $(FLAGS) -o $@ $^
+	rm -v -f *.cmo *.cmi *.cmx *.o *.annot *.cmt *.o
 
 clean :
-	rm -f bin/ack.out
-	rm -f obj/*.o
+	rm -f -v bin/ack.*
+	rm -v -f *.cmo *.cmi *.cmx *.o *.annot *.cmt *.o
 
 install :
-	cp bin/ack.out /usr/local/bin/ack
+	cp bin/ack.native /usr/local/bin/ack
